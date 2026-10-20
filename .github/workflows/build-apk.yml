@@ -1,0 +1,66 @@
+name: Build Orr Expency Debug APK
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build & Package Debug APK
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'gradle'
+
+      - name: Grant Execute Permission for Gradlew
+        run: chmod +x ./gradlew
+
+      - name: Build Debug APK
+        run: ./gradlew :app:assembleDebug --no-daemon
+
+      - name: Verify APK Output
+        run: |
+          APK_PATH="app/build/outputs/apk/debug/app-debug.apk"
+          if [ -f "$APK_PATH" ] && [ -s "$APK_PATH" ]; then
+            echo "Verified: $APK_PATH exists ($(du -h $APK_PATH | cut -f1))"
+          else
+            echo "Error: Debug APK was not generated or is empty!"
+            exit 1
+          fi
+
+      - name: Upload Debug APK Artifact
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: app-debug-apk
+          path: app/build/outputs/apk/debug/app-debug.apk
+          retention-days: 14
+
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v2
+        if: success()
+        with:
+          tag_name: "v1.0.${{ github.run_number }}.${{ github.run_attempt }}-debug"
+          name: "Orr Expency Debug Build v1.0.${{ github.run_number }}"
+          body: |
+            ### Orr Expency — Offline Family Finance Manager (Debug Build)
+            - Automated Build Run: #${{ github.run_number }} (Attempt ${{ github.run_attempt }})
+            - Commit: `${{ github.sha }}`
+            - Note: This is an installable debug APK for local family finance tracking.
+          draft: false
+          prerelease: true
+          files: app/build/outputs/apk/debug/app-debug.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
