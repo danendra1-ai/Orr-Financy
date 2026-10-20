@@ -1,0 +1,6 @@
+{
+  "name": "Orr Expency",
+  "description": "Complete offline family finance manager for Indian households. Tracks income, expenses, budgets, savings goals, bike costs, and financial health in INR.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

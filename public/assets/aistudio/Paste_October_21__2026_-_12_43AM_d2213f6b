@@ -1,0 +1,1212 @@
+# MASTER PROMPT — ORR EXPENCY
+## Complete Offline Family Finance Manager for Android
+
+Act as a senior Android developer, software architect, database engineer, UI/UX designer, and QA engineer. Build a complete, production-quality Android application named **Orr Expency** that manages the income, expenses, budgets, savings, and financial health of an entire family.
+
+The app must be a real, functional Android application, not merely a UI prototype or static dashboard. All calculations, transaction management, database persistence, backup and restore, security, and PDF reporting must work.
+
+Use Android Studio and choose the most suitable native Android technology for this application. Prefer Kotlin, Jetpack Compose, Room (SQLite), and modern Android architecture unless a documented technical reason justifies a different choice.
+
+---
+
+# 1. PRODUCT OBJECTIVE
+
+Orr Expency is a personal, offline-first family finance management app for an Indian household.
+
+The family consists of:
+- Papa
+- Mummy
+- Me (app owner)
+- Sister
+
+The app must answer these questions accurately:
+
+1. What is the family's total income this month?
+2. How much has the family spent this month?
+3. How much income remains after expenses?
+4. What is the actual available cash and bank balance?
+5. How much has each family member spent?
+6. How much has each member contributed to the family fund?
+7. How much have the two family bikes cost, separately?
+8. How much has been spent on ration, education, medical needs, and other categories?
+9. Which categories are exceeding their budgets?
+10. Is the family's financial position comfortable, tight, or in deficit?
+11. How much should the family save, and how much can reasonably be allocated toward savings goals?
+12. What is the projected financial position by the end of the month?
+
+All monetary calculations must use Indian Rupees (INR), with the Indian number format, such as ₹1,00,000.00.
+
+# 2. MANDATORY TECHNICAL ARCHITECTURE
+
+## 2.1 Technology
+
+Build a native Android application using:
+- Kotlin
+- Jetpack Compose for the UI
+- Material 3 design components
+- Room database backed by SQLite
+- Kotlin Coroutines and Flow for asynchronous database operations and reactive UI updates
+- ViewModel and a repository layer
+- Android Keystore-backed secure storage for cryptographic keys, where needed
+- Android biometric authentication APIs for biometric unlock
+- Android PDF generation APIs or a reliable local PDF library
+- Android Storage Access Framework for user-controlled backup and restore files
+
+Use a maintainable separation between presentation, business logic, and data persistence.
+
+A suitable structure is:
+
+- `ui/` — screens, reusable components, navigation and themes
+- `data/` — Room database, entities, DAOs and repositories
+- `domain/` — financial calculations, validation and business rules
+- `security/` — PIN, biometric authentication and app locking
+- `backup/` — backup, restore and integrity verification
+- `reports/` — PDF generation
+- `settings/` — preferences and app configuration
+
+The project must compile in Android Studio using a documented, stable set of compatible dependencies.
+
+Do not use a cloud database, external financial API, online authentication service, or internet connection for core features.
+
+## 2.2 Offline and local-only operation
+
+The application must work fully offline after installation.
+
+All core data must remain on the device:
+- Family member profiles
+- Income records
+- Expense transactions
+- Internal transfers
+- Account balances
+- Budgets
+- Savings goals
+- Recurring bill schedules
+- Vehicle expenses
+- Ration expenses
+- App settings
+
+The app must work in airplane mode, including creating, editing, viewing, filtering, and reporting transactions.
+
+Do not implement cloud synchronization or require account registration.
+
+## 2.3 Login and family member distinction
+
+There is one local app owner/admin, protected by an app PIN and optional biometric authentication.
+
+Papa, Mummy, Me, and Sister are expense attribution profiles, not separate login accounts.
+
+The admin can:
+- Create and edit transactions for any family member
+- View all family financial information
+- Manage budgets and savings goals
+- Manage app settings
+- Create and restore backups
+- Export PDF reports
+
+Do not create nonfunctional individual login screens. Multi-user logins and multi-device synchronization are future enhancements only.
+
+# 3. UI/UX AND VISUAL DESIGN
+
+## 3.1 Branding
+
+App name: **Orr Expency**
+
+Design style:
+- Minimal
+- Clean
+- Modern
+- Professional personal-finance aesthetic
+- Easy to understand for everyday family use
+
+Support both light and dark themes, with a user-accessible theme toggle.
+
+Use:
+- Clear typography
+- Consistent spacing
+- Rounded cards with restrained styling
+- Readable financial figures
+- Subtle transitions
+- Accessible touch targets
+- Clear loading, empty, error and confirmation states
+
+Avoid excessive gradients, decorative animations, cluttered screens, and unnecessarily complicated navigation.
+
+## 3.2 Navigation
+
+Use bottom navigation with four primary destinations:
+
+1. Home
+2. Transactions
+3. Reports
+4. Settings
+
+Provide a prominent Add Transaction action on the dashboard.
+
+Screens such as Members, Vehicles, Budgets, Savings Goals, Recurring Bills, Backup and Restore, and Security can be accessible through dashboard cards or the appropriate secondary menus.
+
+Navigation must work correctly using the Android back button and system navigation.
+
+## 3.3 Responsive layouts
+
+The app must support different Android screen sizes and densities.
+
+Requirements:
+- No overflowing cards or clipped text
+- No buttons extending beyond screen boundaries
+- Scrollable forms where needed
+- Adaptive grids for dashboard cards
+- Proper handling of long category and member names
+- Correct layouts on small phones and larger tablets
+- Support for system font scaling
+- Correct keyboard handling when entering amounts and notes
+
+# 4. GUIDED FIRST-TIME SETUP
+
+On first launch, show a guided onboarding flow.
+
+### Step 1: Welcome
+
+Display the Orr Expency name and explain that financial data is stored locally on the device.
+
+### Step 2: Family members
+
+Create the default profiles:
+- Papa
+- Mummy
+- Me
+- Sister
+
+Allow the admin to edit display names and optionally add more family profiles later.
+
+### Step 3: Opening balances
+
+Allow entry of existing:
+- Cash balance
+- Bank account balances
+
+Opening balances must be entered separately for each account or cash wallet.
+
+If the user does not know a balance, allow zero as a valid starting balance.
+
+Opening balances establish the starting financial position; they are not monthly income.
+
+### Step 4: Income
+
+Set up the family's regular income source:
+- Papa's salary/business income
+
+The income amount must be configurable and must not be fabricated or prefilled with a real-looking financial value.
+
+Allow the user to choose an income schedule and the expected payment date.
+
+### Step 5: Budgets
+
+Allow the admin to establish:
+- Monthly family budget
+- Member-wise budgets
+- Category-wise budgets
+
+The user can skip budget creation and configure it later.
+
+### Step 6: Vehicles
+
+Create two editable vehicle profiles, initially named:
+- Vehicle 1
+- Vehicle 2
+
+Allow the admin to rename them, for example, Papa Bike and Family Bike.
+
+### Step 7: Security
+
+Allow the admin to set an app PIN and optionally enable biometric authentication.
+
+### Step 8: Dashboard
+
+Open the functional dashboard.
+
+Demo data must never be mixed with actual financial records. If a demo preview is offered, provide an explicit demo mode with a clear reset or exit action.
+
+# 5. FAMILY MEMBER MANAGEMENT
+
+Create a dedicated family member management screen.
+
+Each member profile should include:
+- Unique ID
+- Display name
+- Active/inactive status
+- Creation date
+- Optional notes
+
+The default members are Papa, Mummy, Me, and Sister.
+
+For each member, display:
+- Attributed income
+- Expenses for which the member is responsible
+- Expenses paid by the member
+- Contributions to the family fund
+- Personal budget and budget utilization
+
+These are different measures and must not be treated as interchangeable.
+
+An expense must support two independent attribution fields:
+
+1. **Paid by:** who actually paid the money.
+2. **For whom / responsible member:** who the expense was for or which member it should be attributed to.
+
+For a shared household expense, allow a family-wide attribution instead of assigning it to one person.
+
+# 6. INCOME MANAGEMENT
+
+Create an income management screen.
+
+Required features:
+- Add income
+- Edit income
+- View income history
+- Filter by date range and source
+- Attribute income to a member
+- Select the receiving account or cash wallet
+- Add optional notes
+- Mark expected income as received only after confirmation
+
+The primary source is Papa's salary/business income. The amount is not yet known and must be configured by the admin.
+
+Allow additional income sources later, including:
+- Other family member income
+- Rent
+- Farming or agricultural income
+- Pension
+- Other income
+
+Support regular and irregular income schedules even though the current family setup uses fixed income.
+
+Expected income must not be included in actual income or actual account balances until received.
+
+# 7. EXPENSE MANAGEMENT
+
+## 7.1 Required categories
+
+Implement these default expense categories:
+
+1. Ration & Groceries
+2. Vegetables & Fruits
+3. Milk & Dairy
+4. Cooking Gas
+5. Medical & Medicines
+6. Education & College
+7. Mobile & Internet
+8. Clothing & Shopping
+9. House Maintenance
+10. Travel & Transport
+11. Entertainment
+12. Emergency Expenses
+13. Other Expenses
+
+Vehicle expenses must be recorded in dedicated vehicle categories or linked vehicle records while also supporting an overall vehicle expense category in reports.
+
+Allow the admin to add, edit, archive, and optionally rename categories.
+
+## 7.2 Expense transaction fields
+
+Every expense must include:
+- Unique transaction ID
+- Date and time
+- Amount
+- Category
+- Paid by
+- Responsible member or family-wide attribution
+- Payment method
+- Account or cash wallet
+- Optional notes
+- Optional receipt image attachment
+- Optional vehicle reference
+- Creation timestamp
+- Last-modified timestamp
+
+Supported payment methods:
+- Cash
+- UPI
+- Bank transfer
+- Debit/credit card
+
+Use a numeric keypad appropriate for monetary entry.
+
+Validate the amount before saving. Zero and negative amounts must be rejected for normal income and expense entries.
+
+## 7.3 Transaction operations
+
+Implement:
+- Add
+- View
+- Edit
+- Delete with confirmation
+- Search
+- Filter
+- Sort by date or amount
+- View transaction details
+
+Filters should include:
+- Date range
+- Month
+- Category
+- Family member
+- Paid by
+- Payment method
+- Transaction type
+
+After any transaction is created, edited, or deleted, update all affected totals and charts immediately.
+
+If a transaction is deleted, reverse its financial effect exactly once.
+
+Maintain a lightweight audit trail for edits and deletions where feasible. Audit records must not change financial balances.
+
+# 8. TWO-WHEELER EXPENSE TRACKING
+
+Create a dedicated Vehicles screen for two bikes/scooters.
+
+Each vehicle must have:
+- Unique ID
+- Name
+- Vehicle type
+- Optional registration label
+- Active/inactive status
+- Optional notes
+
+Required expense types:
+- Petrol
+- Service & repairs
+- Insurance
+- PUC
+- Other maintenance
+
+For each vehicle expense, store:
+- Vehicle
+- Date
+- Amount
+- Expense type
+- Paid by
+- Payment method
+- Notes
+
+The current requirement is amount-and-date-based petrol tracking. Do not require litres, price per litre, odometer readings, or mileage calculations.
+
+Display separately for each vehicle:
+- Total petrol cost this month
+- Total service and repair cost
+- Insurance cost
+- PUC cost
+- Other maintenance cost
+- Total monthly vehicle expense
+- Total yearly vehicle expense
+- Historical transaction list
+
+Vehicle expenses must be included in the family expense total exactly once.
+
+Do not add the vehicle total on top of an already included family expense total. Vehicle screens are categorized views of existing transactions, not independent duplicate ledgers.
+
+# 9. RATION AND GROCERY TRACKING
+
+The selected ration tracking mode is simple.
+
+Allow the admin to record individual grocery transactions with:
+- Date
+- Total bill amount
+- Category
+- Paid by
+- Payment method
+- Optional notes
+
+Do not require stock management, item quantities, inventory, or low-stock alerts.
+
+Users can optionally add notes such as “monthly ration,” “rice,” or “flour,” but item-wise inventory tracking is outside the mandatory scope.
+
+Ration totals must be available by month and included in the overall family expense total.
+
+# 10. RECURRING BILLS
+
+Implement recurring bill schedules for:
+- Mobile recharge
+- Cooking gas
+- School/college fees
+
+Allow additional recurring bills to be added later.
+
+Each schedule must support:
+- Bill name
+- Expected amount
+- Frequency
+- Due date or next due date
+- Optional category
+- Optional responsible member
+- Active/inactive status
+
+The app should show:
+- Upcoming bills
+- Overdue bills
+- Expected bill amount
+- Paid/unpaid status for each scheduled occurrence
+
+A bill must not be marked paid simply because its due date has arrived.
+
+When the admin marks a bill as paid, ask for or create a linked expense transaction. The payment must be counted once only.
+
+Changing a recurring schedule must not silently alter historical payments.
+
+# 11. INTERNAL TRANSFERS AND FAMILY FUND ACCOUNTING
+
+This is one of the most important parts of the application.
+
+The app must distinguish between:
+1. External income
+2. External expense
+3. Internal transfer between cash/bank accounts
+4. Family member contribution to a common fund
+5. Savings allocation
+6. Opening balance
+
+These concepts must not be combined into a single generic transaction.
+
+## 11.1 Common family fund
+
+The family uses a common fund.
+
+When Papa receives salary into the family's bank account, record actual income once.
+
+When money is moved from the bank account to a cash wallet, record an internal transfer. Do not count this as income or expense.
+
+When the family uses that cash to purchase groceries, record one grocery expense. Do not record another expense merely because the cash was withdrawn.
+
+## 11.2 Contributions
+
+If the app tracks how much each member contributed to the common fund, use a contribution ledger or clearly defined internal allocation records.
+
+Contributions between a member's tracked funds and the family fund must not be counted as new external income if that money has already been recorded as income.
+
+If money moves between tracked accounts, total combined cash/bank assets must remain unchanged.
+
+## 11.3 Shared expenses
+
+Every expense must have a single canonical transaction record.
+
+The same transaction may appear in:
+- The family expense total
+- A category report
+- A member-attribution report
+- A vehicle report
+
+However, those are different views of the same transaction and must never be added together to produce a grand total.
+
+# 12. CASH, BANK BALANCES AND FINANCIAL FORMULAS
+
+Implement a dedicated and testable financial calculation layer.
+
+All monetary values must use exact decimal arithmetic, preferably integer paise stored in a 64-bit integer or another appropriately precise representation. Do not use binary floating-point arithmetic for money.
+
+## 12.1 Actual income
+
+For a reporting period:
+
+Actual income = Sum of confirmed external income transactions in the period.
+
+Exclude:
+- Opening balances
+- Internal transfers
+- Contributions that merely move previously recorded money
+- Expected but unreceived income
+
+## 12.2 Actual expenses
+
+Actual expenses = Sum of confirmed external expense transactions in the period, counted once per transaction.
+
+Exclude:
+- Internal transfers
+- Savings allocations between tracked accounts
+- Opening balances
+- Unpaid scheduled bills
+
+Loan principal and debt repayment tracking are not required in the current scope. If such features are added in the future, they must be modeled separately to avoid counting principal repayments as ordinary consumption and must not be silently included in the current application.
+
+## 12.3 Monthly net cash flow
+
+Monthly net cash flow = Actual income − Actual expenses.
+
+A positive value indicates a surplus during the period. A negative value indicates a deficit during the period.
+
+## 12.4 Monthly savings rate
+
+If actual income is greater than zero:
+
+Savings rate (%) = (Actual income − Actual expenses) ÷ Actual income × 100.
+
+If actual income is zero, show “N/A” instead of dividing by zero.
+
+A negative savings rate is valid and indicates that expenses exceeded income.
+
+Use the label “Net savings / surplus” for the income-minus-expense figure to distinguish it from the family's total accumulated savings.
+
+## 12.5 Account balances
+
+For each tracked account:
+
+Current balance = Opening balance + Confirmed credits − Confirmed debits.
+
+Transfers must debit the source account and credit the destination account in one atomic operation.
+
+The combined total of all tracked accounts must not change as a result of an internal transfer.
+
+Do not treat monthly income minus monthly expenses as equivalent to the current cash/bank balance.
+
+## 12.6 Total available balance
+
+Total available balance = Sum of current balances of all tracked cash wallets and bank accounts.
+
+If credit-card balances or other liabilities are not tracked, do not claim that this figure represents total net worth.
+
+If the admin has not entered all relevant cash and bank accounts, label the figure as the “Recorded available balance” to make its limitations clear.
+
+## 12.7 Budget utilization
+
+For a budget with a positive limit:
+
+Budget utilization (%) = Actual eligible expenses in the budget period ÷ Budget limit × 100.
+
+Remaining budget = Budget limit − Actual eligible expenses.
+
+If the remaining budget is negative, show the overspend amount.
+
+If the budget limit is zero, display an appropriate “No budget set” or “Budget not configured” state rather than dividing by zero.
+
+Family, member, and category budgets must not be added together to produce an expense total.
+
+## 12.8 Vehicle expense formula
+
+Vehicle monthly total = Sum of all confirmed expense transactions linked to that vehicle during the month.
+
+Petrol, maintenance, insurance, PUC, and repairs are included once each.
+
+## 12.9 Opening balances and reporting periods
+
+Opening balances establish account state and must never appear as current-period income.
+
+The default reporting period is the calendar month, from the first day through the last day of the month.
+
+Support year selection and historical monthly reports.
+
+Use consistent local date/time handling and test month boundaries, year boundaries, and leap years.
+
+# 13. DASHBOARD
+
+The Home screen must display:
+
+1. Total monthly income
+2. Total monthly expenses
+3. Monthly net surplus or deficit
+4. Recorded available cash/bank balance
+5. Savings rate
+6. Member-wise expense breakdown
+7. Both vehicles' expense totals
+8. Category-wise expense breakdown
+9. Family and category budget utilization
+10. Recent transactions
+11. Upcoming recurring bills
+12. Financial health summary
+13. Quick-add transaction action
+
+All figures must be calculated from the actual database. Do not hardcode demo amounts, chart values, financial scores, or fake transactions.
+
+If no data exists, show helpful empty states and guide the user through adding the first income, expense, and opening balance.
+
+Provide a month selector and refresh dashboard figures automatically when the selected month changes.
+
+# 14. CHARTS AND REPORTS
+
+Implement the following charts:
+- Income versus expense bar chart
+- Category-wise spending donut or pie chart
+- Family member-wise spending chart
+- Month-by-month income, expense, and savings trend
+
+Charts must be based on the same validated financial calculation layer as the dashboard.
+
+Requirements:
+- Correct labels and currency formatting
+- Legible chart legends
+- Empty states when no records exist
+- Correct filtering by month and year
+- No duplicate aggregation of vehicle or member views
+- Support for negative monthly cash flow
+
+# 15. COMPREHENSIVE FINANCIAL HEALTH ANALYSIS
+
+Provide a rule-based financial health assessment, not an unsupported claim about the family's overall financial wellbeing.
+
+Evaluate:
+- Monthly net cash flow
+- Savings rate
+- Family budget utilization
+- Category-wise overspending
+- Recorded available balance
+- Upcoming recurring bills
+- Whether the recorded balance appears sufficient for near-term known expenses
+
+Show:
+- Overall status
+- Main reasons for the status
+- Categories causing overspending
+- Upcoming bills that may affect cash flow
+- Practical suggestions for reducing expenses
+- Recommended budget adjustments
+
+Use three statuses:
+- Green: Comfortable based on recorded data
+- Yellow: Caution; budget pressure or low surplus
+- Red: Deficit or a significant budget/balance warning
+
+Use configurable, documented thresholds rather than arbitrary claims.
+
+For the initial implementation, apply these transparent rules:
+
+1. Red if monthly net cash flow is negative.
+2. Red if a known upcoming bill cannot be covered by the recorded available balance and no other confirmed funding is available.
+3. Yellow if the month is not in deficit but a budget is exceeded or the savings rate is below the configurable target.
+4. Green only if recorded data is sufficient, net cash flow is nonnegative, and no critical budget or upcoming-bill warning exists.
+5. Otherwise, show “Insufficient data” or Yellow rather than making an unsupported Green assessment.
+
+The above rules may be refined, but their meaning must remain transparent to the user.
+
+The default savings target should be configurable. Do not claim that a specific score or threshold is universally appropriate for every family.
+
+Avoid double-counting upcoming bills that have already been paid.
+
+Do not label monthly surplus as an emergency fund or accumulated savings unless the corresponding funds are actually tracked.
+
+# 16. SAVINGS GOALS
+
+Allow multiple savings goals, such as:
+- Emergency fund
+- Vehicle repair
+- Education
+- Future purchases
+- General family savings
+
+Each goal must support:
+- Goal name
+- Target amount
+- Current allocated amount
+- Optional target date
+- Progress percentage
+- Remaining amount
+- Optional notes
+
+Formula:
+
+Goal progress (%) = Allocated amount ÷ Target amount × 100.
+
+If the target amount is zero or invalid, prevent creation or show an appropriate validation error.
+
+Savings allocations must be handled consistently. Moving money between tracked accounts is an internal transfer, not an expense. A virtual allocation against an existing balance must not increase total assets or create additional savings.
+
+Do not automatically deduct savings contributions from the bank balance unless an actual transfer or transaction is recorded.
+
+Allow the app to suggest a monthly contribution based on the remaining target and time to the goal. Make the suggestion informational and configurable.
+
+# 17. NOTIFICATIONS AND REMINDERS
+
+Implement local notifications for:
+- Monthly or category budget exceeded
+- Recorded available balance below a user-configured limit
+- Upcoming recurring bills
+- Month-end financial summary
+
+Allow notification settings to be enabled or disabled individually.
+
+Notifications must not depend on internet access.
+
+Use appropriate Android notification permissions and scheduling mechanisms. Explain any required permission to the user.
+
+A scheduled notification must not mark a transaction or bill as paid.
+
+For month-end summaries, avoid duplicating reports or issuing excessive notifications.
+
+# 18. SECURITY AND PRIVACY
+
+Implement:
+- App PIN
+- Optional biometric unlock
+- Automatic app lock after inactivity
+- Secure local handling of sensitive data
+- Protected backup and restore workflows
+- Confirmation before destructive operations
+
+Security requirements:
+- Do not store the PIN in plaintext.
+- Use a suitable password hashing approach and secure key management.
+- Use Android Keystore for cryptographic key protection where appropriate.
+- Do not expose private financial data through logs, analytics, notifications, or debug messages.
+- Exclude sensitive data from Android backups unless the user explicitly uses the application's supported backup workflow.
+- Prevent screenshots of sensitive screens where feasible, with a documented option if appropriate.
+- Handle biometric unavailability and authentication failure gracefully.
+
+The biometric option must not prevent the admin from using a secure PIN fallback.
+
+If encrypted backups are supported, use authenticated encryption and a clearly documented recovery method. Do not claim that an encrypted backup is recoverable if its required key or password is lost.
+
+# 19. BACKUP AND RESTORE
+
+Implement both automatic local backup and manual backup.
+
+This application is local-only, so automatic backup must not silently mean cloud synchronization.
+
+## 19.1 Automatic local backup
+
+Provide a configurable local backup schedule using Android-compatible background work scheduling.
+
+Requirements:
+- Run only when appropriate system conditions permit.
+- Use atomic file creation and replacement.
+- Avoid corrupting the previous valid backup if a new backup fails.
+- Keep a configurable number of recent backups.
+- Show the last successful backup time.
+- Show an error if backup creation fails.
+- Never claim a backup succeeded until it has actually been written and verified.
+
+Explain that an automatic backup stored on the same phone may be lost if the device is lost, damaged, or reset.
+
+## 19.2 Manual backup
+
+Allow the admin to create a backup file using the Android Storage Access Framework.
+
+The backup should include:
+- Family member profiles
+- Opening balances
+- Account records
+- Income and expense transactions
+- Internal transfers
+- Budgets
+- Savings goals
+- Recurring bill schedules
+- Vehicle records
+- App preferences that are safe to export
+- Required schema/version metadata
+
+Use a documented versioned format, such as a structured JSON backup with integrity verification. Encrypt sensitive backup contents if feasible and provide a usable recovery method.
+
+## 19.3 Restore
+
+Allow restoration from a supported backup file.
+
+Before restoring:
+- Validate the file format and version.
+- Verify its integrity.
+- Reject invalid or corrupted backups.
+- Show the user what will be restored.
+- Warn if current data will be replaced or merged.
+- Require explicit confirmation.
+
+The initial implementation may use a full-replacement restore to avoid ambiguous merges. If merge functionality is implemented, use stable transaction IDs and explicit duplicate handling.
+
+A failed restore must not leave the database partially overwritten.
+
+Test backup and restore using realistic records and verify that transaction totals and account balances remain unchanged after restoration.
+
+# 20. PDF REPORT EXPORT
+
+PDF is the required report export format.
+
+Generate the PDF entirely on the device without an internet connection.
+
+Allow the admin to select a month and generate a report containing:
+
+1. Report title: Orr Expency — Family Finance Report
+2. Selected reporting period
+3. Total income
+4. Total expenses
+5. Monthly net surplus or deficit
+6. Recorded available balance as of report generation
+7. Savings rate
+8. Family member-wise expense summary
+9. Category-wise expense summary
+10. Vehicle 1 and Vehicle 2 expense summaries
+11. Budget versus actual comparison
+12. Savings goal progress
+13. Upcoming recurring bills, clearly distinguished from paid expenses
+14. Financial health status and reasons
+
+The report must:
+- Use INR formatting
+- Include a generation timestamp
+- Display the selected month and year
+- Include page numbers when applicable
+- Handle long transaction/category names without clipping
+- Support multiple pages
+- Clearly distinguish actual values from estimates and upcoming obligations
+
+Do not include private PINs, cryptographic keys, or other authentication secrets in exported reports.
+
+The totals in the PDF must match the app's dashboard and reporting calculations for the same selected period.
+
+# 21. VALIDATION AND ERROR HANDLING
+
+Implement the following validation rules:
+
+1. Reject zero or negative amounts for ordinary income and expense transactions.
+2. Require valid transaction dates and handle future dates according to the configured transaction rules.
+3. Warn about potential duplicate transactions.
+4. Require all mandatory fields before saving.
+5. Confirm deletions and destructive restore actions.
+6. Ensure edits and deletions update account balances correctly.
+7. Prevent internal transfers from changing combined cash/bank balances.
+8. Prevent the same expense from being recorded twice when a recurring bill is marked paid.
+9. Prevent invalid budget and savings target values.
+10. Handle empty databases without crashes.
+11. Handle missing optional fields safely.
+12. Handle invalid or corrupted backup files safely.
+13. Show understandable errors instead of silently failing.
+14. Preserve existing valid data if an operation fails.
+15. Ensure currency arithmetic is precise and deterministic.
+
+Duplicate detection should compare relevant attributes such as date, amount, category, paid-by member, and transaction type. Treat matches as potential duplicates rather than automatically deleting valid repeated purchases.
+
+Use database transactions for operations that must update multiple related records atomically.
+
+# 22. DATA MODEL
+
+Implement an appropriately normalized local database. The following entities are the minimum logical model; refine the physical schema as needed.
+
+## FamilyMember
+- id
+- name
+- isActive
+- createdAt
+- notes
+
+## FinancialAccount
+- id
+- name
+- accountType (cash, bank, or other supported tracked account)
+- openingBalancePaise
+- openingDate
+- isActive
+
+## Transaction
+- id
+- transactionType
+- amountPaise
+- categoryId
+- transactionDate
+- paidByMemberId
+- responsibleMemberId (nullable)
+- accountId
+- paymentMethod
+- notes
+- vehicleId (nullable)
+- recurringBillOccurrenceId (nullable)
+- createdAt
+- updatedAt
+- status
+
+## InternalTransfer
+- id
+- sourceAccountId
+- destinationAccountId
+- amountPaise
+- transferDate
+- notes
+- createdAt
+
+## Category
+- id
+- name
+- categoryType
+- isActive
+
+## Budget
+- id
+- budgetName
+- budgetType (family, member, or category)
+- memberId (nullable)
+- categoryId (nullable)
+- amountPaise
+- period
+- startDate
+- endDate
+- isActive
+
+## Vehicle
+- id
+- name
+- vehicleType
+- isActive
+- notes
+
+## RecurringBill
+- id
+- name
+- expectedAmountPaise
+- frequency
+- nextDueDate
+- categoryId
+- responsibleMemberId
+- isActive
+
+## RecurringBillOccurrence
+- id
+- recurringBillId
+- dueDate
+- expectedAmountPaise
+- status
+- linkedTransactionId (nullable)
+- paidAt (nullable)
+
+## SavingsGoal
+- id
+- name
+- targetAmountPaise
+- allocatedAmountPaise
+- targetDate (nullable)
+- notes
+- status
+
+## AppSettings
+- theme
+- pinEnabled
+- biometricEnabled
+- autoLockDuration
+- lowBalanceThresholdPaise
+- savingsTargetPercentage
+- notificationPreferences
+- backupPreferences
+
+Additional tables may be created for audit logs, backup metadata, goal allocations, and account balance snapshots.
+
+Use foreign keys, indexes, constraints, migrations, and suitable delete behavior. Do not rely on display names as database identifiers.
+
+Do not store derived financial totals as independent editable values. Calculate them from authoritative records or use safely maintained derived data with consistency checks.
+
+# 23. AUTOMATED TESTING AND ACCEPTANCE CRITERIA
+
+Create unit tests for financial calculations, repository tests for database behavior, and UI/integration tests for critical workflows.
+
+Use isolated test data. Never rely on real family finances or hardcoded demo records.
+
+## Test A: Monthly surplus
+
+Given:
+- Opening balance: ₹10,000
+- Confirmed monthly income: ₹30,000
+- Confirmed monthly expenses: ₹20,000
+
+Expected:
+- Actual income: ₹30,000
+- Actual expenses: ₹20,000
+- Monthly net surplus: ₹10,000
+- Savings rate: 33.33% approximately
+- Closing available balance: ₹20,000, assuming all transactions affect the tracked accounts and there are no other movements
+
+## Test B: Monthly deficit
+
+Given:
+- Opening balance: ₹5,000
+- Confirmed monthly income: ₹20,000
+- Confirmed monthly expenses: ₹25,000
+
+Expected:
+- Net cash flow: −₹5,000
+- Closing balance: ₹0, assuming the account is permitted to reach zero and all movements are recorded consistently
+- Financial health: Red because the month is in deficit
+
+## Test C: Internal transfer
+
+Given:
+- Bank account: ₹10,000
+- Cash wallet: ₹1,000
+- Transfer ₹2,000 from bank to cash
+
+Expected:
+- Bank: ₹8,000
+- Cash: ₹3,000
+- Combined balance remains ₹11,000
+- No income or expense is recorded for the transfer
+
+## Test D: One expense, multiple views
+
+Given:
+- A ₹1,000 petrol transaction linked to Vehicle 1
+- Paid by Papa
+- Recorded once
+
+Expected:
+- Family expense increases by ₹1,000
+- Vehicle 1 expense increases by ₹1,000
+- Papa's paid-by total increases by ₹1,000
+- No duplicated expense appears in the family grand total
+
+## Test E: Transaction editing and deletion
+
+Given:
+- An existing expense of ₹500 is edited to ₹700
+
+Expected:
+- The transaction appears once at ₹700
+- The account balance reflects the additional ₹200 debit
+- Monthly/category/member/vehicle reports update correctly
+
+If the expense is subsequently deleted, reverse its financial effect exactly once.
+
+## Test F: Recurring bill
+
+Given:
+- A scheduled mobile recharge is due
+- No payment has been made
+
+Expected:
+- The bill appears as upcoming or due
+- It does not increase actual expenses
+- It does not reduce account balances
+
+When payment is confirmed, exactly one linked expense is recorded.
+
+## Test G: Persistence
+
+Given:
+- Transactions have been saved
+
+Expected:
+- Closing and reopening the app preserves the records
+- Restarting the phone does not erase the records
+- The dashboard recalculates correctly
+
+## Test H: Backup and restore
+
+Given:
+- A database containing members, opening balances, transactions, budgets, vehicles, and goals
+
+Expected:
+- A valid backup can be restored
+- Financial totals match before and after restore
+- An invalid backup is rejected safely
+- A failed restore does not destroy the previous valid database
+
+## Test I: Security
+
+Verify:
+- PIN setup and verification
+- Biometric enrollment and failure handling
+- PIN fallback
+- Automatic lock after inactivity
+- Sensitive data is not logged
+- Destructive operations require confirmation
+
+## Test J: PDF reports
+
+Verify:
+- PDF creation succeeds offline
+- Report totals match the selected month's dashboard
+- Long reports paginate correctly
+- INR values render correctly
+- Empty reports do not crash the app
+
+## Test K: Responsive UI
+
+Test small phones, large phones, and tablet-sized Android layouts.
+
+Verify:
+- No clipped financial cards
+- No overlapping text
+- No inaccessible controls
+- Correct scrolling and keyboard behavior
+- Correct light and dark themes
+
+## Test L: Edge cases
+
+Test:
+- No transactions
+- Zero income
+- Large financial values
+- Repeated legitimate purchases
+- Duplicate transaction warnings
+- Month-end and year-end dates
+- Leap years
+- Empty optional notes
+- Database migration
+- Interrupted backup
+- Interrupted restore
+
+# 24. IMPLEMENTATION REQUIREMENTS
+
+Build the application incrementally.
+
+Recommended implementation order:
+
+1. Create the Android Studio project and configure dependencies.
+2. Implement the Room database, entities, DAOs, and migrations.
+3. Implement the financial calculation and validation layer.
+4. Implement opening balances and account management.
+5. Implement income, expenses, and internal transfers.
+6. Implement member attribution and the vehicle screens.
+7. Implement recurring bills, budgets, and savings goals.
+8. Implement the dashboard and charts.
+9. Implement financial health analysis.
+10. Implement PIN, biometric authentication, and auto-lock.
+11. Implement local backup, restore, and PDF generation.
+12. Add unit tests, integration tests, and UI tests.
+13. Build and verify the debug APK.
+14. Resolve compilation errors, runtime crashes, and failing tests.
+15. Document how to run, test, and build the project.
+
+Do not stop after creating the dashboard or navigation shell. Continue until the core features are implemented and verified.
+
+Do not use fake buttons, placeholder transaction forms, hardcoded dashboard totals, simulated persistence, or nonfunctional charts.
+
+If a feature cannot be completed, identify it explicitly rather than claiming it works.
+
+# 25. DELIVERABLES
+
+Provide:
+
+1. Complete Android Studio project source code.
+2. A working, installable debug APK if the available environment supports building it.
+3. Clear build and run instructions.
+4. Dependency and SDK requirements.
+5. Database schema and migration documentation.
+6. Financial calculation rules.
+7. Backup and restore instructions.
+8. Automated test suite and test execution instructions.
+9. A list of completed features and any known limitations.
+10. Instructions for generating a release APK.
+
+Do not claim the APK has been built or tested unless those steps have actually succeeded.
+
+# 26. FUTURE ENHANCEMENTS — NOT REQUIRED FOR THE FIRST RELEASE
+
+Do not let these features delay the mandatory offline application:
+
+- Individual login accounts for family members
+- Cloud synchronization across multiple phones
+- Shared live family dashboard
+- Online authentication
+- Automatic bank transaction imports
+- Receipt OCR and automatic expense categorization
+- Ration inventory and stock tracking
+- Petrol litres, price-per-litre, odometer, and mileage analysis
+- Loan and debt management
+- CSV or Excel export
+- Multi-currency support
+- Online backup services
+
+The architecture should be maintainable enough to accommodate future enhancements without requiring a complete rewrite, but do not implement cloud synchronization or other deferred features in the initial release.
+
+# 27. FINAL INSTRUCTION
+
+First inspect the available Android Studio project and environment. Then implement Orr Expency using the specifications above.
+
+Before finishing:
+- Build the application.
+- Run the available automated tests.
+- Fix discovered issues.
+- Verify persistence, account calculations, internal transfer behavior, backups, security flows, and PDF reporting.
+- Clearly report which tests passed and which could not be run.
+
+Prioritize financial correctness, data integrity, privacy, offline reliability, and a clean minimal UI over decorative features.
+
+The final result must be a usable family finance application, not just a visual demonstration.
